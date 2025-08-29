@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Meganoticias - Elecciones</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>Meganoticias</h1>
+    <p>Elecciones - Resultados en vivo</p>
+  </header>
+
+  <main>
+    <button onclick="flashRed()">Simular nueva data</button>
+
+    <!-- Cajas fijas -->
+    <div class="cajas">
+      <div class="caja" id="presidencial">
+        <h2>Presidencial</h2>
+        <div id="presidencial-contenido">
+          Cargando datos...
+        </div>
+      </div>
+
+      <div class="caja" id="diputados">
+        <h2>Diputados</h2>
+        <div id="diputados-contenido">
+          No disponible
+        </div>
+      </div>
+
+      <div class="caja" id="concejales">
+        <h2>Concejales</h2>
+        <div id="concejales-contenido">
+          No disponible
+        </div>
+      </div>
+
+      <div class="caja" id="senadores">
+        <h2>Senadores</h2>
+        <div id="senadores-contenido">
+          No disponible
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="main.js"></script>
+</body>
+</html>

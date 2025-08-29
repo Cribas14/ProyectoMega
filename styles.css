@@ -1,0 +1,70 @@
+body {
+  background: #0b1220;
+  color: white;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  margin: 0;
+  padding: 40px;
+}
+
+header {
+  background: #111827;
+  padding: 20px;
+}
+
+button {
+  padding: 10px 20px;
+  background: red;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.cajas {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 40px;
+}
+
+.caja {
+  width: 260px;
+  min-height: 160px;
+  border: 2px solid white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-weight: bold;
+  font-size: 16px;
+  background-color: #0b1220;
+  transition: background-color 0.3s;
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;   /* <-- alineación al centro */
+  overflow-y: auto;     /* <-- asegura que nada se desborde */
+  max-height: 500px;    /* <-- límite opcional para no romper diseño */
+}
+
+
+.caja h2 {
+  margin: 0 0 10px;
+  font-size: 20px;
+  text-align: center;
+}
+
+.caja p {
+  margin: 4px 0;
+  font-size: 14px;
+  font-weight: normal;
+}
+
+.caja ul {
+  margin: 8px 0;
+  padding-left: 0;       /* <-- quitamos sangría extra */
+  list-style-position: inside; /* <-- bullets alineados dentro */
+  font-size: 13px;
+  text-align: left;      /* <-- los candidatos se ven ordenados en lista */
+  width: 100%;           /* <-- aprovecha el ancho de la caja */
+}
