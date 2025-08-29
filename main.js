@@ -1,60 +1,84 @@
-var rojo = "rgb(255, 0, 0)";
-var negro = "rgb(11, 18, 32)";
-document.body.style.backgroundColor = negro;
-var counter = 0;
+// -----------------------------
+// COLORES Y CONFIGURACIÓN INICIAL
+// -----------------------------
 
-// APIs
-const API_PRESIDENCIAL = "https://elecciones-dev.mega.cl/api/v202511/resultados?redis=false&eleccion=4&zona=19001&zonaTipo=10";
-// const API_DIPUTADOS = "... (aún no disponible)"
-// const API_CONCEJALES = "... (aún no disponible)"
-// const API_SENADORES = "... (aún no disponible)"
+// Colores para el efecto de parpadeo
+let red = "rgb(255, 0, 0)";
+let black = "rgb(11, 18, 32)";
 
-// Flash rojo general
+// Fondo de inicio en negro
+document.body.style.backgroundColor = black;
+
+// Contador que limita la cantidad de parpadeos
+let counter = 0;
+
+// URLs de APIs
+const API_PRESIDENTIAL = "https://elecciones-dev.mega.cl/api/v202511/resultados?redis=false&eleccion=4&zona=19001&zonaTipo=10";
+// const API_DIPUTADOS = "pendiente";
+// const API_CONCEJALES = "pendiente";
+// const API_SENADORES = "pendiente";
+
+
+// -----------------------------
+// FUNCIONES
+// -----------------------------
+
+// Efecto visual de parpadeo rojo/negro
 function flashRed() {
-  let cajas = document.querySelectorAll(".caja");
-  window.intervalo = setInterval(() => {
-    let body = document.body.style.backgroundColor;
-    if (body == negro) {
-      document.body.style.backgroundColor = rojo;
-      cajas.forEach(caja => caja.style.backgroundColor = rojo);
+  let boxes = document.querySelectorAll(".caja");
+
+  window.interval = setInterval(() => {
+    let background = document.body.style.backgroundColor;
+
+    if (background === black) {
+      document.body.style.backgroundColor = red;
+      boxes.forEach(box => box.style.backgroundColor = red);
     } else {
-      document.body.style.backgroundColor = negro;
-      cajas.forEach(caja => caja.style.backgroundColor = negro);
+      document.body.style.backgroundColor = black;
+      boxes.forEach(box => box.style.backgroundColor = black);
     }
+
+    // Detener el parpadeo después de unas cuantas repeticiones
     if (counter > 4) {
-      clearInterval(window.intervalo);
+      clearInterval(window.interval);
       counter = 0;
     } else {
-      if (document.body.style.backgroundColor == rojo) {
+      if (document.body.style.backgroundColor === red) {
         counter++;
       }
     }
-  }, 600);
+  }, 600); // cada 0,6 segundos
 }
 
-// Actualizar datos de Presidencial
-async function actualizarPresidencial() {
+
+// Actualizar y mostrar datos de Presidencial
+async function updatePresidential() {
   try {
-    let response = await fetch(API_PRESIDENCIAL);
+    // Pido los datos a la API
+    let response = await fetch(API_PRESIDENTIAL);
     let data = await response.json();
 
-    let votacion = data.data.eleccion.votacion;
-    let candidatos = data.data.zonas["1-19001"].candidatos;
+    // Datos generales de la elección
+    let voting = data.data.eleccion.votacion;
 
-    // Armamos el HTML con todos los datos
+    // Lista de candidatos
+    let candidates = data.data.zonas["1-19001"].candidatos;
+
+    // Construyo el HTML con toda la información
     let html = `
-      <p><strong>Votos totales:</strong> ${votacion.votos}</p>
-      <p><strong>Válidos:</strong> ${votacion.validos}</p>
-      <p><strong>Blancos:</strong> ${votacion.blancos}</p>
-      <p><strong>Nulos:</strong> ${votacion.nulos}</p>
-      <p><strong>Participación:</strong> ${votacion.participacion}%</p>
-      <p><strong>Mesas escrutadas:</strong> ${votacion.escrutado}%</p>
-      <p><strong>Última actualización:</strong> ${votacion.actualizacion}</p>
+      <p><strong>Votos totales:</strong> ${voting.votos}</p>
+      <p><strong>Válidos:</strong> ${voting.validos}</p>
+      <p><strong>Blancos:</strong> ${voting.blancos}</p>
+      <p><strong>Nulos:</strong> ${voting.nulos}</p>
+      <p><strong>Participación:</strong> ${voting.participacion}%</p>
+      <p><strong>Mesas escrutadas:</strong> ${voting.escrutado}%</p>
+      <p><strong>Última actualización:</strong> ${voting.actualizacion}</p>
       <p><strong>Candidatos:</strong></p>
       <ul>
     `;
 
-    candidatos.forEach(c => {
+    // Agrego cada candidato con sus datos
+    candidates.forEach(c => {
       html += `
         <li>
           ${c.alias} (${c.partido.descripcion}) – 
@@ -66,40 +90,47 @@ async function actualizarPresidencial() {
 
     html += "</ul>";
 
-    document.getElementById("presidencial-contenido").innerHTML = html;
+    // Pego el resultado en la caja de Presidencial
+    document.getElementById("presidencial-content").innerHTML = html;
 
-    // Aviso visual general
+    // Activo el parpadeo general
     flashRed();
 
   } catch (error) {
-    console.error("Error obteniendo datos Presidencial:", error);
-    document.getElementById("presidencial-contenido").textContent = "Error cargando datos";
+    console.error("Error cargando Presidencial:", error);
+    document.getElementById("presidencial-content").textContent = "Error cargando datos";
   }
 }
 
-// Simulación para las otras elecciones
-function actualizarDiputados() {
-  document.getElementById("diputados-contenido").textContent = "No disponible";
+
+// Funciones temporales para las otras elecciones
+function updateDiputados() {
+  document.getElementById("diputados-content").textContent = "No disponible";
 }
 
-function actualizarConcejales() {
-  document.getElementById("concejales-contenido").textContent = "No disponible";
+function updateConcejales() {
+  document.getElementById("concejales-content").textContent = "No disponible";
 }
 
-function actualizarSenadores() {
-  document.getElementById("senadores-contenido").textContent = "No disponible";
+function updateSenadores() {
+  document.getElementById("senadores-content").textContent = "No disponible";
 }
 
-// Función principal para actualizar todo
-function actualizarDatos() {
-  actualizarPresidencial();
-  actualizarDiputados();
-  actualizarConcejales();
-  actualizarSenadores();
+
+// -----------------------------
+// EJECUCIÓN PRINCIPAL
+// -----------------------------
+
+// Esta función actualiza todas las cajas
+function updateAll() {
+  updatePresidential();
+  updateDiputados();
+  updateConcejales();
+  updateSenadores();
 }
 
-// Ejecutar al cargar
-window.onload = actualizarDatos;
+// Cuando la página carga, actualizo todo
+window.onload = updateAll;
 
-// Refrescar cada 60 segundos
-setInterval(actualizarDatos, 60000);
+// Cada 60 segundos, vuelvo a pedir datos
+setInterval(updateAll, 60000);

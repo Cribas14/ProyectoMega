@@ -1,3 +1,4 @@
+/* ----- Estilos generales ----- */
 body {
   background: #0b1220;
   color: white;
@@ -21,6 +22,7 @@ button {
   cursor: pointer;
 }
 
+/* ----- Contenedor de cajas ----- */
 .cajas {
   display: flex;
   justify-content: center;
@@ -29,6 +31,7 @@ button {
   margin-top: 40px;
 }
 
+/* ----- Cajas individuales ----- */
 .caja {
   width: 260px;
   min-height: 160px;
@@ -36,17 +39,13 @@ button {
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-weight: bold;
-  font-size: 16px;
   background-color: #0b1220;
   transition: background-color 0.3s;
   padding: 15px;
   border-radius: 8px;
-  text-align: center;   /* <-- alineación al centro */
-  overflow-y: auto;     /* <-- asegura que nada se desborde */
-  max-height: 500px;    /* <-- límite opcional para no romper diseño */
+  text-align: center;
+  overflow-y: auto; /* evita que el contenido se desborde */
 }
-
 
 .caja h2 {
   margin: 0 0 10px;
@@ -60,11 +59,12 @@ button {
   font-weight: normal;
 }
 
+/* Lista de candidatos */
 .caja ul {
   margin: 8px 0;
-  padding-left: 0;       /* <-- quitamos sangría extra */
-  list-style-position: inside; /* <-- bullets alineados dentro */
+  padding-left: 0;
+  list-style-position: inside; 
   font-size: 13px;
-  text-align: left;      /* <-- los candidatos se ven ordenados en lista */
-  width: 100%;           /* <-- aprovecha el ancho de la caja */
+  text-align: left;
+  width: 100%;
 }
